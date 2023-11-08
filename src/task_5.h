@@ -1,16 +1,23 @@
 #include <iostream>
 
-int main() {
-    int asciiCode;
-    std::cout << "Enter an ASCII code (between 0 and 127): ";
-    std::cin >> asciiCode;
-
-    if (asciiCode >= 0 && asciiCode <= 127) {
-        char ch = static_cast<char>(asciiCode);
-        std::cout << "The character corresponding to ASCII code " << asciiCode << " is: " << ch << std::endl;
-    } else {
-        std::cout << "Invalid ASCII code. Please enter a value between 0 and 127." << std::endl;
+void towerOfHanoi(int n, char source, char auxiliary, char destination) {
+    if (n == 1) {
+        std::cout << "Move disk 1 from " << source << " to " << destination << std::endl;
+        return;
     }
+
+    towerOfHanoi(n - 1, source, destination, auxiliary);
+    std::cout << "Move disk " << n << " from " << source << " to " << destination << std::endl;
+    towerOfHanoi(n - 1, auxiliary, source, destination);
+}
+
+int main() {
+    int n;
+    std::cout << "Enter the number of disks: ";
+    std::cin >> n;
+
+    towerOfHanoi(n, 'A', 'B', 'C'); // 'A', 'B', and 'C' represent the three pegs
 
     return 0;
 }
+
