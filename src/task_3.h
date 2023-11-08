@@ -1,25 +1,44 @@
 #include <iostream>
+#include <stack>
+#include <string>
+
+int evaluatePostfixExpression(const std::string& expression) {
+    std::stack<int> operandStack;
+
+    for (char c : expression) {
+        if (isdigit(c)) {
+ 
+            operandStack.push(c - '0');
+        } else if (c == '+' || c == '-' || c == '*') {
+    
+            int operand2 = operandStack.top();
+            operandStack.pop();
+            int operand1 = operandStack.top();
+            operandStack.pop();
+
+            int result;
+            if (c == '+') {
+                result = operand1 + operand2;
+            } else if (c == '-') {
+                result = operand1 - operand2;
+            } else if (c == '*') {
+                result = operand1 * operand2;
+            }
+
+            operandStack.push(result);
+        }
+    }
+
+    return operandStack.top();
+}
 
 int main() {
-    int number;
-    std::cout << "Enter an integer between 0 and 1000: ";
-    std::cin >> number;
+    std::string expression;
+    std::cout << "Enter an expression in postfix notation: ";
+    std::getline(std::cin, expression);
 
-    if (number < 0 || number > 1000) {
-        std::cout << "Invalid input. Please enter an integer between 0 and 1000." << std::endl;
-        return 0;
-    }
-
-    int sum = 0;
-    int remainder;
-
-    while (number > 0) {
-        remainder = number % 10;
-        sum += remainder;
-        number /= 10;
-    }
-
-    std::cout << "The sum of the digits is: " << sum << std::endl;
+    int result = evaluatePostfixExpression(expression);
+    std::cout << "Result: " << result << std::endl;
 
     return 0;
 }
